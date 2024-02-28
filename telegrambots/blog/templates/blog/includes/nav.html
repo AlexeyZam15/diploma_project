@@ -1,0 +1,9 @@
+<nav class="navbar navbar-dark bg-dark">
+    <ul class="nav navbar-nav">
+        {% for c in cats %}
+        <li class="nav-item">
+            <a href='#' class="nav-link">{{ c }}</a>
+            {% endfor %}
+        </li>
+    </ul>
+</nav>
