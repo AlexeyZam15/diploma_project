@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 from blog.models import Author
 from blog.models import Article
+from blog.models import Category
 
 import random
 
@@ -23,13 +24,14 @@ class Command(BaseCommand):
         ○ количество просмотров статьи
         ○ флаг, указывающий, опубликована ли статья
         """
-        authors = [author for author in Author.objects.all()]
+        authors = Author.objects.all()
+        categories = Category.objects.all()
         for i in range(count):
             data = {
                 'title': f'Title{i}',
                 'content': f'Content{i}',
                 'author': random.choice(authors),
-                'category': f'Category{i}',
+                'category': random.choice(categories),
                 'views': random.randint(0, 100),
                 'is_published': random.choice([True, True, False])}
             Article.create_article(data)

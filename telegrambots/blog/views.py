@@ -1,38 +1,39 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
+from blog import models
+
 menu = [
     {'title': 'Главная', 'url_name': 'home'},
-    {'title': 'О сайте', 'url_name': 'about'},
     {'title': 'Добавить статью', 'url_name': 'add_page'},
+]
+
+top_menu = [
+    {'title': 'О сайте', 'url_name': 'about'},
     {'title': 'Обратная связь', 'url_name': 'contact'},
+    {'title': 'Регистрация', 'url_name': 'register'},
     {'title': 'Войти', 'url_name': 'login'},
 ]
 
-data_db = [
-    {'id': 1, 'title': 'Обучение', 'content': 'Контент Обучение', 'is_published': True, },
-    {'id': 2, 'title': 'Работа', 'content': 'Контент Работа', 'is_published': False, },
-    {'id': 3, 'title': 'Домашка', 'content': 'Контент Домашка', 'is_published': True, },
-]
 
-cats = ['Обучение', 'Работа', 'Домашка']
+def get_context():
+    return {
+        'menu': menu,
+        'posts': models.Article.objects.all(),
+        'cats': models.Category.objects.all(),
+        'top_menu': top_menu,
+    }
 
 
 def index(request):
-    context = {
-        'title': 'Главная страница',
-        'menu': menu,
-        'posts': data_db,
-        'cats': cats
-    }
+    context = get_context()
+    context['title'] = 'Главная страница'
     return render(request, 'blog/index.html', context)
 
 
 def about(request):
-    context = {
-        'title': 'О сайте',
-        'menu': menu
-    }
+    context = get_context()
+    context['title'] = 'О сайте'
     return render(request, 'blog/about.html', context)
 
 
@@ -50,6 +51,10 @@ def contact(request):
 
 def login(request):
     return HttpResponse('Авторизация')
+
+
+def register(request):
+    return HttpResponse('Регистрация')
 
 
 def page_not_found(request, exception):

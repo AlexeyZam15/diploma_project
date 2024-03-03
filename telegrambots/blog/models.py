@@ -61,11 +61,27 @@ class Author(models.Model):
         verbose_name_plural = 'Авторы'
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=100, verbose_name='Название')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['title']
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    @property
+    def url_name(self):
+        return "home"
+
+
 class Article(models.Model):
     title = models.CharField(max_length=200, verbose_name='Заголовок')
     content = models.TextField(verbose_name='Содержание', null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
-    category = models.CharField(max_length=100, verbose_name='Категория')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='Категория', null=True)
     views = models.IntegerField(default=0, verbose_name='Просмотры')
     is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
     date_published = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
