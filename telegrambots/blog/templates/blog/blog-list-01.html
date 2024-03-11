@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Page heading -->
+<div class="container p-t-4 p-b-40">
+    <h2 class="f1-l-1 cl2">
+        {{ title }}
+    </h2>
+</div>
+
+<!-- Post -->
+<section class="bg0 p-b-55">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-80">
+                <div class="p-r-10 p-r-0-sr991">
+                    {% for p in posts %}
+                    <div class="m-t--40 p-b-40">
+                        <!-- Item post -->
+                        <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+                            <a href="blog-detail-02.html" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+                                <img src="{% static 'blog/images/post-43.jpg' %}" alt="IMG">
+                            </a>
+
+                            <div class="size-w-9 w-full-sr575 m-b-25">
+                                <h5 class="p-b-12">
+                                    <a href="blog-detail-02.html" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
+                                        {{ p.title }}
+                                    </a>
+                                </h5>
+
+                                <div class="cl8 p-b-18">
+                                    <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                        {{ p.category.title }}
+                                    </a>
+                                </div>
+
+                                {% if p.changed %}
+                                <div class="cl8 p-b-18">
+                                    <span class="f1-s-3">
+											Изменено - {{ p.change_date }}
+										</span>
+                                </div>
+                                {% endif %}
+
+                                <div class="cl8 p-b-18">
+                                    <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                        {{ p.author.full_name }}
+                                    </a>
+
+                                    <span class="f1-s-3 m-rl-3">
+											-
+										</span>
+
+                                    <span class="f1-s-3">
+											{{ p.date_published }}
+										</span>
+                                </div>
+
+                                <p class="f1-s-1 cl6 p-b-24">
+                                    {{ p.description }}
+                                </p>
+
+                                <a href="{% url 'post' p.id %}" class="f1-s-1 cl9 hov-cl10 trans-03">
+                                    Читать
+                                    <i class="m-l-2 fa fa-long-arrow-alt-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <a href="#" class="flex-c-c size-a-13 bo-all-1 bocl11 f1-m-6 cl6 hov-btn1 trans-03">
+                            Load More
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-10 col-lg-4 p-b-80">
+                <div class="p-l-10 p-rl-0-sr991">
+
+                    <!-- Popular Posts -->
+                    <div>
+                        <div class="how2 how2-cl4 flex-s-c">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Популярные посты
+                            </h3>
+                        </div>
+
+                        <ul class="p-t-35">
+                            {% for p in pop_posts %}
+                            <li class="flex-wr-sb-s p-b-30">
+                                <a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
+                                    <img src="{% static 'blog/images/popular-post-04.jpg' %}" alt="IMG">
+                                </a>
+
+                                <div class="size-w-11">
+                                    <h6 class="p-b-4">
+                                        <a href="#" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                            {{ p.title }}
+                                        </a>
+                                    </h6>
+
+                                    <span class="cl8 txt-center p-b-24">
+											<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+												{{  p.category.title }}
+											</a>
+
+											<span class="f1-s-3 m-rl-3">
+												-
+											</span>
+
+											<span class="f1-s-3">
+												{{ p.date_published }}
+											</span>
+										</span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

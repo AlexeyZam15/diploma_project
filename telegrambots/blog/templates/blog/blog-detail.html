@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<!-- Content -->
+<section class="bg0 p-b-70 p-t-5">
+    <!-- Title -->
+    <div class="bg-img1 size-a-18 how-overlay1"
+         style="background-image: {% static 'blog/images/blog-detail-01.jpg' %};">
+        <div class="container h-full flex-col-e-c p-b-58">
+            <a href="#" class="f1-s-10 cl0 hov-cl10 trans-03 text-uppercase txt-center m-b-33">
+                {{ post.category.title }}
+            </a>
+
+            <h3 class="f1-l-5 cl0 p-b-16 txt-center respon2">
+                {{ post.title }}
+            </h3>
+
+            <div class="flex-wr-c-s">
+					<span class="f1-s-3 cl0 m-rl-7 txt-center">
+						<a href="#" class="f1-s-4 cl0 hov-cl10 trans-03">
+							{{ post.author_full_name }}
+						</a>
+
+						<span class="m-rl-3">-</span>
+
+						<span>
+							{{ post.date_published }}
+						</span>
+					</span>
+
+                <span class="f1-s-3 cl0 m-rl-7 txt-center">
+						просмотров: {{ post.views }}
+					</span>
+
+                <a href="" class="f1-s-3 cl0 m-rl-7 txt-center hov-cl10 trans-03">
+                    комментариев: {{ post.comments|length }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail -->
+    <div class="container p-t-82">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-100">
+                <div class="p-r-10 p-r-0-sr991">
+                    <!-- Blog Detail -->
+                    <div class="p-b-70">
+                        {{ post.description }}
+
+                    </div>
+                    <div class="p-b-70">
+                        {{ post.content }}
+
+                    </div>
+
+                    <!-- Leave a comment -->
+                    <div>
+                        <h4 class="f1-l-4 cl3 p-b-12">
+                            Комментарий
+                        </h4>
+
+                        <p class="f1-s-13 cl8 p-b-40">
+                            Ваш адрес электронной почты не будет опубликован. Обязательные поля помечены *
+                        </p>
+
+                        <form>
+                            <textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20"
+                                      name="msg" placeholder="Текст комментария..."></textarea>
+
+                            <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text"
+                                   name="name" placeholder="Имя*">
+
+                            <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="text"
+                                   name="email" placeholder="Почта*">
+
+                            <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+                                Отправить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

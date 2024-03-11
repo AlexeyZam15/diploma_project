@@ -78,7 +78,8 @@ class Category(models.Model):
 
 
 class Article(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Заголовок')
+    title = models.CharField(max_length=25, verbose_name='Заголовок')
+    description = models.TextField(max_length=70, verbose_name='Описание', null=True, blank=True, default='')
     content = models.TextField(verbose_name='Содержание', null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='Категория', null=True)
@@ -135,6 +136,15 @@ class Article(models.Model):
     @admin.display(description="Автор")
     def author_full_name(self):
         return self.author.full_name
+
+    @staticmethod
+    def get_published_posts():
+        return Article.objects.filter(is_published=True).all()
+
+    def changed(self):
+        if self.date_published != self.change_date:
+            return True
+        return False
 
 
 class Comment(models.Model):

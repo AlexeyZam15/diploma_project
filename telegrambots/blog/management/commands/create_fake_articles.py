@@ -6,6 +6,8 @@ from blog.models import Category
 
 import random
 
+from django.utils import lorem_ipsum
+
 
 class Command(BaseCommand):
     help = 'Create fake n articles'
@@ -29,6 +31,7 @@ class Command(BaseCommand):
         for i in range(count):
             data = {
                 'title': f'Title{i}',
+                'description': lorem_ipsum.words(random.randint(1, 70)),
                 'content': f'Content{i}',
                 'author': random.choice(authors),
                 'category': random.choice(categories),
