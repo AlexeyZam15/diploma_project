@@ -12,5 +12,6 @@ urlpatterns = [
     path("about/", views.about, name='about'),
     path("posts/", views.all_posts, name='posts'),
     path("posts/<int:post_id>", views.show_post, name='post'),
-    path("posts/", views.add_post, name='add_post')
+    path("posts/", views.add_post, name='add_post'),
+    path("categories/<int:category_id>", views.show_category, name='category'),
 ]

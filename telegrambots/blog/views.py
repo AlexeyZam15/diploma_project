@@ -30,10 +30,12 @@ def get_context():
 
 def index(request):
     context = get_context()
-    category_articles = {category.title: models.Article.get_published_posts().filter(category=category).all()[:4] for category in
-                         context['cats']}
+    category_articles = [
+        {'posts': models.Article.get_published_posts().filter(category=category).all()[:4], 'cat': category}
+        for category in context['cats']]
     context['c_posts'] = category_articles
     context['title'] = 'Главная'
+    print(*context['c_posts'], sep="\n")
     return render(request, 'blog/index.html', context)
 
 
@@ -81,6 +83,14 @@ def add_post(request):
     context = get_context()
     context['title'] = 'Добавить статью'
     return render(request, 'blog/add_post.html', context)
+
+
+def show_category(request, category_id):
+    context = get_context()
+    category = get_object_or_404(models.Category, id=category_id)
+    context['title'] = category.title
+    context['posts'] = models.Article.get_published_posts().filter(category=category)
+    return render(request, 'blog/category-01.html', context)
 
 
 def page_not_found(request, exception):
