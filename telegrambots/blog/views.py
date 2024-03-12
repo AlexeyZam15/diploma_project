@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -31,7 +32,7 @@ def get_context():
 def index(request):
     context = get_context()
     category_articles = [
-        {'posts': models.Article.get_published_posts().filter(category=category).all()[:4], 'cat': category}
+        {'posts': models.Article.get_published_posts().filter(category=category).all(), 'cat': category}
         for category in context['cats']]
     context['c_posts'] = category_articles
     context['title'] = 'Главная'
@@ -76,6 +77,11 @@ def all_posts(request):
     context = get_context()
     context['title'] = 'Все статьи'
     context['posts'] = models.Article.get_published_posts()
+    paginator = Paginator(context['posts'], 4)
+    page_number = request.GET.get('page') or 1
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
+    context['page'] = int(page_number)
     return render(request, 'blog/blog-list-01.html', context)
 
 
@@ -89,7 +95,12 @@ def show_category(request, category_id):
     context = get_context()
     category = get_object_or_404(models.Category, id=category_id)
     context['title'] = category.title
-    context['posts'] = models.Article.get_published_posts().filter(category=category)
+    posts = models.Article.get_published_posts().filter(category=category)
+    paginator = Paginator(posts, 6)
+    page_number = request.GET.get('page') or 1
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
+    context['page'] = int(page_number)
     return render(request, 'blog/category-01.html', context)
 
 

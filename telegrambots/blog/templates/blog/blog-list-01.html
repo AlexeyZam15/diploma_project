@@ -17,7 +17,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8 p-b-80">
                 <div class="p-r-10 p-r-0-sr991">
-                    {% for p in posts %}
+                    {% for p in page_obj %}
                     <div class="m-t--40 p-b-40">
                         <!-- Item post -->
                         <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
@@ -70,12 +70,12 @@
                                 </a>
                             </div>
                         </div>
-
-                        <a href="#" class="flex-c-c size-a-13 bo-all-1 bocl11 f1-m-6 cl6 hov-btn1 trans-03">
-                            Load More
-                        </a>
                     </div>
                     {% endfor %}
+                    <!-- Pagination -->
+                    {% include 'blog/includes/pagination.html' with
+                    page_obj=page_obj
+                    page=page %}
                 </div>
             </div>
 

@@ -12,12 +12,12 @@
 </div>
 
 <!-- Post -->
-<section class="bg0 p-t-70 p-b-55">
+<section class="bg0 p-t-10 p-b-55">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8 p-b-80">
                 <div class="row">
-                    {% for p in posts %}
+                    {% for p in page_obj%}
                     <div class="col-sm-6 p-r-25 p-r-15-sr991">
                         <!-- Item latest -->
                         <div class="m-b-45">
@@ -52,10 +52,9 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex-wr-s-c m-rl--7 p-t-15">
-                    <a href="#" class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</a>
-                    <a href="#" class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">2</a>
-                </div>
+                {% include 'blog/includes/pagination.html' with
+                page_obj=page_obj
+                page=page %}
             </div>
 
             <div class="col-md-10 col-lg-4 p-b-80">
