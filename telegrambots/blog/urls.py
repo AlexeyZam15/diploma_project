@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, register_converter
 from . import views
 from . import converters
@@ -12,6 +14,6 @@ urlpatterns = [
     path("about/", views.about, name='about'),
     path("posts/", views.all_posts, name='posts'),
     path("posts/<int:post_id>", views.show_post, name='post'),
-    path("posts/", views.add_post, name='add_post'),
+    path("posts/create", views.add_post, name='add_post'),
     path("categories/<int:category_id>", views.show_category, name='category'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

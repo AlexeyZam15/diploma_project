@@ -1,5 +1,10 @@
 {% for m in menu %}
 <li class="{{ li_class }}">
     <a class="{{ a_class }}" href="{% url m.url_name %}">{{ m.title }} </a>
+    {% if 'in_menu' in m %}
+    <ul class="sub-menu">
+        {% include 'blog/includes/menu.html' only with menu=m.in_menu %}
+    </ul>
+    {% endif %}
 </li>
 {% endfor %}

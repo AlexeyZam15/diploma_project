@@ -87,7 +87,7 @@ class Article(models.Model):
     is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
     date_published = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     change_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
-    image = models.ImageField(upload_to='images/', verbose_name='Картинка', null=True, blank=True)
+    image = models.FileField(upload_to='images/', verbose_name='Превью', null=True, blank=True)
 
     fields = ['title', 'content', 'category', 'views']
 

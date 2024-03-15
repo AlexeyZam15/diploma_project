@@ -1,13 +1,16 @@
+from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from blog import models
+from . import models
 from django.utils import lorem_ipsum
+
+from . import forms
 
 menu = [
     {'title': 'Главная', 'url_name': 'home'},
-    {'title': 'Статьи', 'url_name': 'posts'},
+    {'title': 'Статьи', 'url_name': 'posts', 'in_menu': [{'title': 'Добавить статью', 'url_name': 'add_post'}, ]},
 ]
 
 top_menu = [
@@ -36,7 +39,6 @@ def index(request):
         for category in context['cats']]
     context['c_posts'] = category_articles
     context['title'] = 'Главная'
-    print(*context['c_posts'], sep="\n")
     return render(request, 'blog/index.html', context)
 
 
@@ -67,9 +69,17 @@ def register(request):
 
 def show_post(request, post_id):
     post = get_object_or_404(models.Article, id=post_id)
+    form = forms.CommentForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post', post_id)
     context = get_context()
     context['title'] = post.title
     context['post'] = post
+    context['form'] = form
     return render(request, 'blog/blog-detail.html', context)
 
 
@@ -85,12 +95,6 @@ def all_posts(request):
     return render(request, 'blog/blog-list-01.html', context)
 
 
-def add_post(request):
-    context = get_context()
-    context['title'] = 'Добавить статью'
-    return render(request, 'blog/add_post.html', context)
-
-
 def show_category(request, category_id):
     context = get_context()
     category = get_object_or_404(models.Category, id=category_id)
@@ -102,6 +106,19 @@ def show_category(request, category_id):
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
     return render(request, 'blog/category-01.html', context)
+
+
+def add_post(request):
+    form = forms.ArticleForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            post = form.save()
+            return redirect('post', post.id)
+    context = get_context()
+    context['title'] = 'Добавить статью'
+    context['form'] = form
+    context['action'] = 'Создать'
+    return render(request, 'blog/form_create.html', context)
 
 
 def page_not_found(request, exception):

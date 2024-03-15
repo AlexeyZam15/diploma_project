@@ -94,9 +94,9 @@
 						</span>
                 </li>
 
-                {% with menu=top_menu li_class='left-topbar' a_class='left-topbar-item' %}
-                {% include 'blog/includes/menu.html'%}
-                {% endwith %}
+                    {% with menu=top_menu li_class='left-topbar' a_class='left-topbar-item' %}
+                    {% include 'blog/includes/menu.html'%}
+                    {% endwith %}
 
                 <li class="right-topbar">
                     <a href="#">
@@ -180,15 +180,6 @@
     <div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
 
         <div class="f2-s-1 p-r-30 m-tb-6">
-            {% if title != 'Главная' %}
-            <a href="{% url 'home' %}" class="breadcrumb-item f1-s-3 cl9">
-                Главная
-            </a>
-
-            <span class="breadcrumb-item f1-s-3 cl9">
-					{{ title }}
-				</span>
-            {% endif %}
         </div>
 
         <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
