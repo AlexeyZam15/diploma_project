@@ -1,5 +1,6 @@
 from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -28,7 +29,8 @@ def get_context():
         'menu': menu,
         'cats': categories,
         'top_menu': top_menu,
-        'pop_posts': pop_articles
+        'pop_posts': pop_articles,
+        'search_form': forms.SearchForm
     }
 
 
@@ -85,8 +87,17 @@ def show_post(request, post_id):
 
 def all_posts(request):
     context = get_context()
-    context['title'] = 'Все статьи'
-    context['posts'] = models.Article.get_published_posts()
+    search_query = request.GET.get('search', '')
+    if search_query:
+        context['title'] = f'Поиск по запросу: "{search_query}"'
+        context['search_query'] = search_query
+        context['posts'] = models.Article.get_published_posts().filter(Q(title__icontains=search_query) |
+                                                                       Q(description__icontains=search_query) |
+                                                                       Q(content__icontains=search_query))
+    else:
+        context['title'] = 'Все статьи'
+        context['posts'] = models.Article.get_published_posts()
+    context['search'] = search_query
     paginator = Paginator(context['posts'], 4)
     page_number = request.GET.get('page') or 1
     page_obj = paginator.get_page(page_number)
@@ -118,6 +129,20 @@ def add_post(request):
     context['title'] = 'Добавить статью'
     context['form'] = form
     context['action'] = 'Создать'
+    return render(request, 'blog/form_create.html', context)
+
+
+def change_post(request, post_id):
+    post = get_object_or_404(models.Article, id=post_id)
+    form = forms.ArticleForm(request.POST or None, request.FILES or None, instance=post)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('post', post_id)
+    context = get_context()
+    context['title'] = 'Редактировать статью'
+    context['form'] = form
+    context['action'] = 'Сохранить'
     return render(request, 'blog/form_create.html', context)
 
 

@@ -38,3 +38,11 @@ class CommentForm(forms.ModelForm):
             'author': 'Автор',
             'comment': 'Текст',
         }
+
+
+class SearchForm(forms.Form):
+    search_str = forms.CharField(max_length=100, required=False,
+                                 widget=forms.TextInput(attrs={'class': 'f1-s-1 cl6 plh9 s-full p-l-25 p-r-45'}), label="")
+    search_str.widget.attrs.update({'placeholder': 'Поиск'})
+    search_str.widget.attrs.update({'type': 'text'})
+    search_str.widget.attrs.update({'name': 'search'})

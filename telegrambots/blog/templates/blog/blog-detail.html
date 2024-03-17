@@ -19,7 +19,9 @@
 
                         <h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
                             {{ post.title }}
+
                         </h3>
+
 
                         <div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
@@ -32,6 +34,7 @@
 									<span>
 										{{ post.date_published }}
 									</span>
+
 								</span>
 
                             <span class="f1-s-3 cl8 m-r-15">
@@ -41,10 +44,16 @@
                             <a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
                                 {{ post.comments|length }} комментариев
                             </a>
+
+                            <a href="{% url 'change_post' post.id %}" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                Изменить статью
+                            </a>
                         </div>
 
                         <div class="wrap-pic-max-w p-b-30">
-                            <img src="{{ post.image.url }}" alt="IMG">
+                            <a href="{{ post.image.url }}" target="_blank">
+                                <img src="{{ post.image.url }}" alt="IMG">
+                            </a>
                         </div>
                         <div class="f1-s-11 cl6 p-b-25"> {{ post.description }}</div>
                         <div class="f1-s-11 cl6 p-b-25"> {{ post.content }}</div>
