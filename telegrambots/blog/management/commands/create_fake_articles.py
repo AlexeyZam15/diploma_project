@@ -1,8 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from blog.models import Author
-from blog.models import Article
-from blog.models import Category
+from blog.models import Author, Article, Category, Tag
 
 import random
 
@@ -23,11 +21,13 @@ class Command(BaseCommand):
         ○ дата публикации статьи
         ○ автор статьи
         ○ категория статьи
+        ○ теги статьи
         ○ количество просмотров статьи
         ○ флаг, указывающий, опубликована ли статья
         """
         authors = Author.objects.all()
         categories = Category.objects.all()
+        tags = Tag.objects.all()
         for i in range(count):
             data = {
                 'title': f'Title{i}',
@@ -37,5 +37,7 @@ class Command(BaseCommand):
                 'category': random.choice(categories),
                 'views': random.randint(0, 100),
                 'is_published': random.choice([True, True, False])}
-            Article.create_article(data)
+            article = Article.create_article(data)
+            article.tags.set(random.sample(list(tags), random.randint(1, 5)))
+            article.save()
         self.stdout.write(self.style.SUCCESS(f'Created {count} fake articles'))

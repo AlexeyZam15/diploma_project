@@ -106,11 +106,24 @@ def all_posts(request):
     return render(request, 'blog/blog-list-01.html', context)
 
 
-def show_category(request, category_id):
+def show_category(request, category_title):
     context = get_context()
-    category = get_object_or_404(models.Category, id=category_id)
+    category = get_object_or_404(models.Category, title=category_title)
     context['title'] = category.title
     posts = models.Article.get_published_posts().filter(category=category)
+    paginator = Paginator(posts, 6)
+    page_number = request.GET.get('page') or 1
+    page_obj = paginator.get_page(page_number)
+    context['page_obj'] = page_obj
+    context['page'] = int(page_number)
+    return render(request, 'blog/category-01.html', context)
+
+
+def show_tag(request, tag):
+    context = get_context()
+    tag = get_object_or_404(models.Tag, title=tag)
+    context['title'] = tag.title
+    posts = models.Article.get_published_posts().filter(tags=tag)
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page') or 1
     page_obj = paginator.get_page(page_number)

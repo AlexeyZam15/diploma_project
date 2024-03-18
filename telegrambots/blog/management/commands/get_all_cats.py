@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         categories = Category.objects.all()
         for category in categories:
-            self.stdout.write(category.name)
+            self.stdout.write(category.title)
         if not categories:
             self.stdout.write('No categories')
         return

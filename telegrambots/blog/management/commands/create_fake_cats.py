@@ -20,10 +20,8 @@ class Command(BaseCommand):
         if categories:
             last_id = categories.order_by('-id')[0].id
         else:
-            test = Category.objects.create(title='test')
-            last_id = test.id
-            test.delete()
-        for i in range(1, count + 1):
-            Category.objects.create(title=f'Category{last_id + i}')
+            last_id = 1
+        for i in range(count):
+            Category.objects.create(title=f'Category{last_id + i}', description=f'Description{last_id + i}')
 
         self.stdout.write(self.style.SUCCESS(f'Created {count} fake categories'))

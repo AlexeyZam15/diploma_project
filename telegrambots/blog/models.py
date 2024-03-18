@@ -63,12 +63,14 @@ class Author(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
+    description = models.TextField(verbose_name='Описание', null=True, blank=True, default='')
+    views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
         return self.title
 
     class Meta:
-        ordering = ['title']
+        ordering = ['id']
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -77,12 +79,26 @@ class Category(models.Model):
         return "home"
 
 
+class Tag(models.Model):
+    title = models.CharField(max_length=100, verbose_name='Название')
+    views = models.IntegerField(default=0, verbose_name='Просмотры')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+
 class Article(models.Model):
     title = models.CharField(max_length=25, verbose_name='Заголовок')
     description = models.TextField(max_length=70, verbose_name='Описание', null=True, blank=True, default='')
     content = models.TextField(verbose_name='Содержание', null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='Категория', null=True)
+    tags = models.ManyToManyField(Tag, verbose_name='Теги', blank=True)
     views = models.IntegerField(default=0, verbose_name='Просмотры')
     is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
     date_published = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
