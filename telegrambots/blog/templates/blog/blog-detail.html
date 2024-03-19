@@ -13,7 +13,7 @@
                 <div class="p-r-10 p-r-0-sr991">
                     <!-- Blog Detail -->
                     <div class="p-b-70">
-                        <a href="#" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
+                        <a href="{% url 'category' post.category.title %}" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
                             {{ post.category.title }}
                         </a>
 
@@ -50,10 +50,12 @@
                             </a>
                         </div>
 
-                        <div class="wrap-pic-max-w p-b-30">
+                        <div class="wrap-pic-max-w p-b-0">
+                            {% if post.image %}
                             <a href="{{ post.image.url }}" target="_blank">
                                 <img src="{{ post.image.url }}" alt="IMG">
                             </a>
+                            {% endif %}
                         </div>
                         <div class="f1-s-11 cl6 p-b-25"> {{ post.description }}</div>
                         <div class="f1-s-11 cl6 p-b-25"> {{ post.content }}</div>

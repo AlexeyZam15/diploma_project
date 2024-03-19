@@ -116,6 +116,7 @@ def show_category(request, category_title):
     page_obj = paginator.get_page(page_number)
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
+    context['cat'] = category
     return render(request, 'blog/category-01.html', context)
 
 

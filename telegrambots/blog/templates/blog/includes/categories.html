@@ -1,0 +1,5 @@
+{% for c in cats %}
+<li class="{{ li_class }}">
+    <a class="{{ a_class }}" href="{% url 'category' c.title %}">{{ c.title }} </a>
+</li>
+{% endfor %}

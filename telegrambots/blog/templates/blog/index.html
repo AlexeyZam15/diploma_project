@@ -21,7 +21,7 @@
                             </h3>
 
                             <!--  -->
-                            <a href="{% url 'category' item.cat.id  %}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+                            <a href="{% url 'category' item.cat.title  %}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
                                 Посмотреть все
                                 <i class="fs-12 m-l-5 fa fa-caret-right"></i>
                             </a>
@@ -137,7 +137,7 @@
                                     </h6>
 
                                     <span class="cl8 txt-center p-b-24">
-											<a href="{% url 'category' p.category.id %}"
+											<a href="{% url 'category' p.category.title %}"
                                                class="f1-s-6 cl8 hov-cl10 trans-03">
 												{{  p.category.title }}
 											</a>
