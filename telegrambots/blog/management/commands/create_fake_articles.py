@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.management.base import BaseCommand
 
 from blog.models import Author, Article, Category, Tag
@@ -28,16 +30,20 @@ class Command(BaseCommand):
         authors = Author.objects.all()
         categories = Category.objects.all()
         tags = Tag.objects.all()
+        data = []
         for i in range(count):
-            data = {
-                'title': f'Title{i}',
-                'description': lorem_ipsum.words(random.randint(1, 70)),
-                'content': f'Content{i}',
-                'author': random.choice(authors),
-                'category': random.choice(categories),
-                'views': random.randint(0, 100),
-                'is_published': random.choice([True, True, False])}
-            article = Article.create_article(data)
+            article = Article(
+                title=f'Title{i}',
+                description=lorem_ipsum.words(random.randint(1, 70)),
+                content=f'Content{i}',
+                author=random.choice(authors),
+                category=random.choice(categories),
+                views=random.randint(0, 100),
+                is_published=random.choice([True, True, False])
+            )
+            data.append(article)
+        Article.objects.bulk_create(data)
+        for article in data:
             article.tags.set(random.sample(list(tags), random.randint(1, 5)))
             article.save()
-        self.stdout.write(self.style.SUCCESS(f'Created {count} fake articles'))
+        self.stdout.write(self.style.SUCCESS(f'Created {count} fake articles.'))

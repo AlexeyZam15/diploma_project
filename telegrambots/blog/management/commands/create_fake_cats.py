@@ -21,7 +21,9 @@ class Command(BaseCommand):
             last_id = categories.order_by('-id')[0].id
         else:
             last_id = 1
+        data = []
         for i in range(count):
-            Category.objects.create(title=f'Category{last_id + i}', description=f'Description{last_id + i}')
-
+            cat = Category(title=f'Category{last_id + i}', description=f'Description{last_id + i}')
+            data.append(cat)
+        Category.objects.bulk_create(data)
         self.stdout.write(self.style.SUCCESS(f'Created {count} fake categories'))
