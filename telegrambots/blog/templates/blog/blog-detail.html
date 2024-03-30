@@ -6,24 +6,21 @@
 
 
 <!-- Content -->
-<section class="bg0 p-b-70 p-t-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-8 p-b-30">
-                <div class="p-r-10 p-r-0-sr991">
-                    <!-- Blog Detail -->
-                    <div class="p-b-70">
-                        <a href="{% url 'category' post.category.title %}" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
-                            {{ post.category.title }}
-                        </a>
+<div class="col-md-10 col-lg-8 p-b-30">
+    <div class="p-r-10 p-r-0-sr991">
+        <!-- Blog Detail -->
+        <div class="p-b-70">
+            <a href="{% url 'category' post.category.title %}" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
+                {{ post.category.title }}
+            </a>
 
-                        <h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
-                            {{ post.title }}
+            <h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
+                {{ post.title }}
 
-                        </h3>
+            </h3>
 
 
-                        <div class="flex-wr-s-s p-b-40">
+            <div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
 									<a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
 										{{ post.author.full_name }}
@@ -37,79 +34,79 @@
 
 								</span>
 
-                            <span class="f1-s-3 cl8 m-r-15">
+                <span class="f1-s-3 cl8 m-r-15">
 									{{ post.views }} просмотров
 								</span>
 
-                            <a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
-                                {{ post.comments|length }} комментариев
-                            </a>
+                <a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
+                    {{ post.comments|length }} комментариев
+                </a>
 
-                            <a href="{% url 'change_post' post.id %}" class="f1-s-4 cl8 hov-cl10 trans-03">
-                                Изменить статью
-                            </a>
-                        </div>
-
-                        <div class="wrap-pic-max-w p-b-0">
-                            {% if post.image %}
-                            <a href="{{ post.image.url }}" target="_blank">
-                                <img src="{{ post.image.url }}" alt="IMG">
-                            </a>
-                            {% endif %}
-                        </div>
-                        <div class="f1-s-11 cl6 p-b-25"> {{ post.description }}</div>
-                        <div class="f1-s-11 cl6 p-b-25"> {{ post.content }}</div>
-
-                    </div>
-
-                    <!-- Leave a comment -->
-                    <div>
-                        <h4 class="f1-l-4 cl3 p-b-12">
-                            Оставить комментарий
-                        </h4>
-
-                        <p class="f1-s-13 cl8 p-b-40">
-                            Ваш адрес электронной почты не будет опубликован. Обязательные поля помечены *
-                        </p>
-
-                        <form action="" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ form.as_div }}
-                            <button type="submit"
-                                    class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
-                                Отправить
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <a href="{% url 'change_post' post.id %}" class="f1-s-4 cl8 hov-cl10 trans-03">
+                    Изменить статью
+                </a>
             </div>
 
-            <!-- Sidebar -->
-            <div class="col-md-5 col-lg-4 p-b-30">
-                <div class="p-l-10 p-rl-0-sr991 p-t-5">
-                    <!-- Popular Posts -->
-                    <div>
-                        <div class="how2 how2-cl4 flex-s-c">
-                            <h3 class="f1-m-2 cl3 tab01-title">
-                                Популярные посты
-                            </h3>
-                        </div>
+            <div class="wrap-pic-max-w p-b-0">
+                {% if post.image %}
+                <a href="{{ post.image.url }}" target="_blank">
+                    <img src="{{ post.image.url }}" alt="IMG">
+                </a>
+                {% endif %}
+            </div>
+            <div class="f1-s-11 cl6 p-b-25"> {{ post.description }}</div>
+            <div class="f1-s-11 cl6 p-b-25"> {{ post.content }}</div>
 
-                        <ul class="p-t-35">
-                            {% for p in pop_posts %}
-                            <li class="flex-wr-sb-s p-b-30">
-                                <a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
-                                    <img src="{% static 'blog/images/popular-post-04.jpg' %}" alt="IMG">
-                                </a>
+        </div>
 
-                                <div class="size-w-11">
-                                    <h6 class="p-b-4">
-                                        <a href="#" class="f1-s-5 cl3 hov-cl10 trans-03">
-                                            {{ p.title }}
-                                        </a>
-                                    </h6>
+        <!-- Leave a comment -->
+        <div>
+            <h4 class="f1-l-4 cl3 p-b-12">
+                Оставить комментарий
+            </h4>
 
-                                    <span class="cl8 txt-center p-b-24">
+            <p class="f1-s-13 cl8 p-b-40">
+                Ваш адрес электронной почты не будет опубликован. Обязательные поля помечены *
+            </p>
+
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_div }}
+                <button type="submit"
+                        class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+                    Отправить
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="col-md-5 col-lg-4 p-b-30">
+    <div class="p-l-10 p-rl-0-sr991 p-t-5">
+        <!-- Popular Posts -->
+        <div>
+            <div class="how2 how2-cl4 flex-s-c">
+                <h3 class="f1-m-2 cl3 tab01-title">
+                    Популярные посты
+                </h3>
+            </div>
+
+            <ul class="p-t-35">
+                {% for p in pop_posts %}
+                <li class="flex-wr-sb-s p-b-30">
+                    <a href="#" class="size-w-10 wrap-pic-w hov1 trans-03">
+                        <img src="{% static 'blog/images/popular-post-04.jpg' %}" alt="IMG">
+                    </a>
+
+                    <div class="size-w-11">
+                        <h6 class="p-b-4">
+                            <a href="#" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                {{ p.title }}
+                            </a>
+                        </h6>
+
+                        <span class="cl8 txt-center p-b-24">
 											<a href="{% url 'category' p.category.id %}"
                                                class="f1-s-6 cl8 hov-cl10 trans-03">
 												{{  p.category.title }}
@@ -123,15 +120,12 @@
 												{{ p.date_published }}
 											</span>
 										</span>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul>
                     </div>
-                </div>
-            </div>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
-</section>
+</div>
 
 {% endblock %}
