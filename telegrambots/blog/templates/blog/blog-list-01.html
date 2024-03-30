@@ -4,20 +4,18 @@
 
 {% block content %}
 
-<!-- Page heading -->
-<div class="container p-t-4 p-b-40">
-    <h2 class="f1-l-1 cl2">
-        {{ title }}
-    </h2>
-</div>
-
 <!-- Post -->
 <div class="col-md-10 col-lg-8 p-b-80">
     <div class="p-r-10 p-r-0-sr991">
+        <!-- Pagination -->
+        {% include 'blog/includes/pagination.html' with
+        page_obj=page_obj
+        page=page
+        search=search %}
         {% for p in page_obj %}
-        <div class="m-t--40 p-b-40">
+        <div class="m-t--40 p-b-15">
             <!-- Item post -->
-            <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+            <div class="flex-wr-sb-s p-t-40 how-bor2">
                 <a href="{% url 'post' p.id %}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
                     <img src="{% static 'blog/images/post-43.jpg' %}" alt="IMG">
                 </a>

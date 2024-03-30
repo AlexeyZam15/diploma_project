@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -9,26 +10,12 @@ from django.utils import lorem_ipsum
 
 from . import forms
 
-menu = [
-    {'title': 'Главная', 'url_name': 'home'},
-    {'title': 'Статьи', 'url_name': 'posts', 'in_menu': [{'title': 'Добавить статью', 'url_name': 'add_post'}, ]},
-]
-
-top_menu = [
-    {'title': 'О сайте', 'url_name': 'about'},
-    {'title': 'Обратная связь', 'url_name': 'contact'},
-    {'title': 'Регистрация', 'url_name': 'register'},
-    {'title': 'Войти', 'url_name': 'login'},
-]
-
 
 def get_context():
     categories = models.Category.objects.all()
     pop_articles = models.Article.get_published_posts().order_by('-views')[:5]
     return {
-        'menu': menu,
         'cats': categories,
-        'top_menu': top_menu,
         'pop_posts': pop_articles,
         'search_form': forms.SearchForm
     }
@@ -117,7 +104,8 @@ def show_category(request, category_title):
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
     context['cat'] = category
-    return render(request, 'blog/category-01.html', context)
+    context['text'] = category.description
+    return render(request, 'blog/blog-list-01.html', context)
 
 
 def show_tag(request, tag):
@@ -133,6 +121,7 @@ def show_tag(request, tag):
     return render(request, 'blog/category-01.html', context)
 
 
+@login_required
 def add_post(request):
     form = forms.ArticleForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
@@ -146,6 +135,7 @@ def add_post(request):
     return render(request, 'blog/form_create.html', context)
 
 
+@login_required
 def change_post(request, post_id):
     post = get_object_or_404(models.Article, id=post_id)
     form = forms.ArticleForm(request.POST or None, request.FILES or None, instance=post)

@@ -41,9 +41,15 @@
                 <div class="left-topbar">
 						<span class="left-topbar-item flex-wr-s-c">
 						</span>
-                    {% include 'blog/includes/menu_a.html' with
+                    {% if user.is_authenticated %}
+                    {% include 'includes/menu_a.html' with
+                    menu=user_top_menu
+                    a_class='left-topbar-item' %}
+                    {% else %}
+                    {% include 'includes/menu_a.html' with
                     menu=top_menu
                     a_class='left-topbar-item' %}
+                    {% endif %}
                 </div>
 
                 <div class="right-topbar">
@@ -95,7 +101,7 @@
                 </li>
 
                 {% with menu=top_menu li_class='left-topbar' a_class='left-topbar-item' %}
-                {% include 'blog/includes/menu.html'%}
+                {% include 'includes/menu.html'%}
                 {% endwith %}
 
                 <li class="right-topbar">
@@ -122,12 +128,12 @@
             </ul>
 
             <ul class="main-menu-m">
-                {% include 'blog/includes/menu.html' only with menu=menu %}
+                {% include 'includes/menu.html' only with menu=menu %}
 
                 <li>
                     <a href="#">Категории</a>
                     <ul class="sub-menu-m">
-                        {% include 'blog/includes/categories.html' only with cats=cats %}
+                        {% include 'includes/categories.html' only with cats=cats %}
                     </ul>
 
                     <span class="arrow-main-menu-m">
@@ -159,13 +165,13 @@
                         <!--                            <a href="{% url 'home' %}">Home</a>-->
                         <!--                        </li>-->
                         {% with li_class='mega-menu-item' menu=menu %}
-                        {% include 'blog/includes/menu.html' %}
+                        {% include 'includes/menu.html' %}
                         {% endwith %}
 
                         <li>
                             <a href="#">Категории</a>
                             <ul class="sub-menu">
-                                {% include 'blog/includes/categories.html' only with cats=cats %}
+                                {% include 'includes/categories.html' only with cats=cats %}
                             </ul>
                         </li>
                     </ul>
@@ -192,9 +198,18 @@
         </div>
     </div>
 </div>
-<section class="bg0 p-t-10">
+<section class="bg0">
     <div class="container">
         <div class="row justify-content-center">
+            <!-- Page heading -->
+            <div class="container p-t-4 p-b-5">
+                <h2 class="f1-l-1 cl2 p-b-15">
+                    {{ title }}
+                </h2>
+                {% if text %}
+                <div class="f1-s-11 cl6 p-b-5"> {{ text }}</div>
+                {% endif %}
+            </div>
             {% block content %}
             {% endblock %}
         </div>
@@ -266,7 +281,7 @@
                     </div>
 
                     <ul class="m-t--12">
-                        {% include 'blog/includes/menu.html' with
+                        {% include 'includes/menu.html' with
                         li_class='how-bor1 p-rl-5 p-tb-10'
                         a_class='f1-s-5 cl11 hov-cl10 trans-03 p-tb-8'
                         menu=cats %}
