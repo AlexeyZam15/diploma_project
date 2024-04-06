@@ -167,7 +167,7 @@ class Article(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='comments', verbose_name='Автор')
     article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='comments', verbose_name='Статья')
-    comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
+    comment = RichTextField(verbose_name='Комментарий', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     date_modified = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
 
