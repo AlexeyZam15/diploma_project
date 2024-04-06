@@ -65,6 +65,14 @@ class ArticleAdmin(admin.ModelAdmin):
         messages.success(request, "Выбранные статьи скрыты")
 
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('title', 'views')
+    search_fields = ('title', 'description')
+    list_per_page = 15
+    ordering = ('id',)
+
+
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.Comment, CommentAdmin)
+admin.site.register(models.Category, CategoryAdmin)

@@ -207,7 +207,7 @@
                     {{ title }}
                 </h2>
                 {% if text %}
-                <div class="f1-s-11 cl6 p-b-5"> {{ text }}</div>
+                <div class="f1-s-11 cl6 p-b-5"> {{ text|safe }}</div>
                 {% endif %}
             </div>
             {% block content %}

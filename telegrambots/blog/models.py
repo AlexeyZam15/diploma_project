@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 class Author(models.Model):
@@ -63,7 +64,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
-    description = models.TextField(verbose_name='Описание', null=True, blank=True, default='')
+    description = RichTextField(verbose_name='Описание', null=True, blank=True)
     views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
