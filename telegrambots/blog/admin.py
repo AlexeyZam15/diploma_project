@@ -27,8 +27,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = (
-        'id', 'title', 'author_full_name', 'category', 'views', 'is_published', 'date_published', 'change_date')
+    list_display = ('title', 'author_full_name', 'category', 'views', 'is_published', 'date_published', 'change_date')
     search_fields = ('title', 'author__first_name', 'author__last_name', 'category')
     list_per_page = 15
     ordering = ('-change_date',)
@@ -36,7 +35,6 @@ class ArticleAdmin(admin.ModelAdmin):
     list_filter = ('author', 'is_published', 'category')
     autocomplete_fields = ['author']
     actions = ['publish_articles', 'hide_articles']
-    list_display_links = ('id', 'title')
 
     @admin.action(description="Опубликовать статьи")
     def publish_articles(self, request, queryset):

@@ -95,8 +95,8 @@ class Tag(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=25, verbose_name='Заголовок')
-    description = models.TextField(max_length=70, verbose_name='Описание', null=True, blank=True, default='')
-    content = models.TextField(verbose_name='Содержание', null=True, blank=True)
+    description = models.TextField(max_length=255, verbose_name='Описание', null=True, blank=True)
+    content = RichTextField(verbose_name='Содержание', null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='Категория', null=True)
     tags = models.ManyToManyField(Tag, verbose_name='Теги', blank=True)
