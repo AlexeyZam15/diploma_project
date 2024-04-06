@@ -1,0 +1,8 @@
+key.txt
+__pycache__
+.idea
+static
+media
+*.log
+*.pyc
+.env
