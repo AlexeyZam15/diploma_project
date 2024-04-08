@@ -1,13 +1,13 @@
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-
-from django.contrib.auth.models import User
 
 
 class Command(BaseCommand):
     help = 'Delete all no staff users'
 
     def handle(self, *args, **options):
-        users = User.objects.filter(is_staff=False)
+        user = get_user_model()
+        users = user.objects.filter(is_staff=False)
         if not users:
             print(f'No no staff users to delete')
             return

@@ -8,11 +8,11 @@ logger = logging.getLogger(__name__)
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'email', 'bio', 'birth_date', 'reg_date', 'change_date')
+    list_display = ('id', 'full_name', 'email', 'bio', 'birth_date', 'date_joined', 'change_date')
     search_fields = ('first_name', 'last_name', 'email')
     list_per_page = 15
     ordering = ('-change_date',)
-    readonly_fields = ['reg_date', 'change_date']
+    readonly_fields = ['date_joined', 'change_date']
 
 
 class CommentAdmin(admin.ModelAdmin):
@@ -70,7 +70,7 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ('id',)
 
 
-admin.site.register(models.Author, AuthorAdmin)
+admin.site.register(models.User, AuthorAdmin)
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.Category, CategoryAdmin)

@@ -1,8 +1,7 @@
-from datetime import datetime
-
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
-from blog.models import Author, Article, Category, Tag
+from blog.models import Article, Category, Tag
 
 import random
 
@@ -27,7 +26,11 @@ class Command(BaseCommand):
         ○ количество просмотров статьи
         ○ флаг, указывающий, опубликована ли статья
         """
-        authors = Author.objects.all()
+        user = get_user_model()
+        authors = user.objects.filter(is_staff=False).all()
+        if not authors:
+            self.stdout.write(self.style.ERROR('No authors found.'))
+            return
         categories = Category.objects.all()
         tags = Tag.objects.all()
         data = []
@@ -43,7 +46,8 @@ class Command(BaseCommand):
             )
             data.append(article)
         Article.objects.bulk_create(data)
-        for article in data:
-            article.tags.set(random.sample(list(tags), random.randint(1, 5)))
-            article.save()
+        if tags:
+            for article in data:
+                article.tags.set(random.sample(list(tags), random.randint(1, 5)))
+                article.save()
         self.stdout.write(self.style.SUCCESS(f'Created {count} fake articles.'))

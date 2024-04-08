@@ -1,15 +1,13 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from ckeditor.fields import RichTextField
 
 
-class Author(models.Model):
-    first_name = models.CharField(max_length=100, verbose_name='Имя')
-    last_name = models.CharField(max_length=100, verbose_name='Фамилия')
-    email = models.EmailField(verbose_name='Почта')
+class User(AbstractUser):
     bio = models.TextField(verbose_name='Биография', null=True, blank=True)
     birth_date = models.DateField(verbose_name='День рождения', null=True, blank=True)
-    reg_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
     change_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
 
     fields = ['first_name', 'last_name', 'email', 'bio', 'birth_date']
@@ -97,7 +95,7 @@ class Article(models.Model):
     title = models.CharField(max_length=25, verbose_name='Заголовок')
     description = models.TextField(max_length=255, verbose_name='Описание', null=True, blank=True)
     content = RichTextField(verbose_name='Содержание', null=True, blank=True)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='Категория', null=True)
     tags = models.ManyToManyField(Tag, verbose_name='Теги', blank=True)
     views = models.IntegerField(default=0, verbose_name='Просмотры')
@@ -165,7 +163,7 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='comments', verbose_name='Автор')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments', verbose_name='Автор')
     article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='comments', verbose_name='Статья')
     comment = RichTextField(verbose_name='Комментарий', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
