@@ -126,7 +126,9 @@ def add_post(request):
     form = forms.ArticleForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
             return redirect('post', post.id)
     context = get_context()
     context['title'] = 'Добавить статью'
