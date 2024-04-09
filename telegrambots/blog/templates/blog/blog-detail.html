@@ -14,12 +14,6 @@
                 {{ post.category.title }}
             </a>
 
-            <h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
-                {{ post.title }}
-
-            </h3>
-
-
             <div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
 									<a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
@@ -41,10 +35,11 @@
                 <a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
                     {{ post.comments|length }} комментариев
                 </a>
-
+                {% if user.is_staff or post.author == user %}
                 <a href="{% url 'change_post' post.id %}" class="f1-s-4 cl8 hov-cl10 trans-03">
                     Изменить статью
                 </a>
+                {% endif %}
             </div>
 
             <div class="wrap-pic-max-w p-b-0">

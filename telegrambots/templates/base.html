@@ -77,14 +77,15 @@
         <!-- Menu Mobile -->
         <div class="menu-mobile">
             <ul class="topbar-mobile">
-                <li class="left-topbar">
-						<span class="left-topbar-item flex-wr-s-c">
-						</span>
-                </li>
-
+                {% if user.is_authenticated %}
+                {% with menu=user_top_menu li_class='left-topbar' a_class='left-topbar-item' %}
+                {% include 'includes/menu.html'%}
+                {% endwith %}
+                {% else %}
                 {% with menu=top_menu li_class='left-topbar' a_class='left-topbar-item' %}
                 {% include 'includes/menu.html'%}
                 {% endwith %}
+                {% endif %}
 
                 <li class="right-topbar">
                     <p>{{ user.username }}</p>
