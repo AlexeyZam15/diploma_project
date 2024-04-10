@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
 from blog.models import Article
@@ -19,8 +20,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         pk = options['id']
         author_id = options.get('author')
+        user = get_user_model()
         if author_id is not None:
-            author = Author.get_author(author_id)
+            author = user.objects.get(id=author_id)
             if author is not None:
                 Article.update_article(pk, 'author', author)
 

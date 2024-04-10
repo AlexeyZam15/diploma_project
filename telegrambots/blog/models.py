@@ -19,37 +19,6 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.full_name} {self.email} {self.bio} {self.birth_date}'
 
-    """CRUD функции"""
-
-    @staticmethod
-    def create_author(first_name, last_name, email, bio, birth_date):
-        return Author.objects.create(first_name=first_name, last_name=last_name, email=email, bio=bio,
-                                     birth_date=birth_date)
-
-    @staticmethod
-    def get_authors():
-        return Author.objects.all()
-
-    @staticmethod
-    def get_author(author_id):
-        return Author.objects.filter(id=author_id).first()
-
-    @staticmethod
-    def update_author(author_id, attr, new_value):
-        author = Author.get_author(author_id)
-        if author is None:
-            return None
-        setattr(author, attr, new_value)
-        author.save()
-
-    @staticmethod
-    def delete_author(author_id):
-        author = Author.get_author(author_id)
-        if author is None:
-            return None
-        author.delete()
-        return author
-
     @property
     def articles(self):
         return Article.objects.filter(author=self)
@@ -163,7 +132,8 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments', verbose_name='Автор')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments',
+                               verbose_name='Автор')
     article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='comments', verbose_name='Статья')
     comment = RichTextField(verbose_name='Комментарий', null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
