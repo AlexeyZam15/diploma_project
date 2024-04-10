@@ -29,11 +29,11 @@
 								</span>
 
                 <span class="f1-s-3 cl8 m-r-15">
-									{{ post.views }} просмотров
+                    просмотров: {{ post.views }}
 								</span>
 
                 <a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
-                    {{ post.comments|length }} комментариев
+                    комментариев: {{ post.comments|length }}
                 </a>
                 {% if user.is_staff or post.author == user %}
                 <a href="{% url 'change_post' post.id %}" class="f1-s-4 cl8 hov-cl10 trans-03">
@@ -66,6 +66,7 @@
 
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {{ form.media }}
                 {{ form.as_div }}
                 <button type="submit"
                         class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">

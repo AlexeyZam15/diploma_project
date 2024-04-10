@@ -69,6 +69,8 @@ def show_post(request, post_id):
     context['title'] = post.title
     context['post'] = post
     context['form'] = form
+    post.views += 1
+    post.save()
     return render(request, 'blog/blog-detail.html', context)
 
 

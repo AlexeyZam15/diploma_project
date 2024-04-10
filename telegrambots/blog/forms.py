@@ -9,7 +9,6 @@ class ArticleForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'content': forms.Textarea(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
             'is_published': forms.CheckboxInput(attrs={'class': 'form-group'}),
             'image': forms.FileInput(attrs={'class': 'form-group'}),
@@ -30,7 +29,6 @@ class CommentForm(forms.ModelForm):
         fields = ['author', 'comment']
         widgets = {
             'author': forms.Select(attrs={'class': 'form-group'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control'}),
         }
         labels = {
             'author': 'Автор',
