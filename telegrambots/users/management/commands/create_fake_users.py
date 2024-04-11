@@ -18,7 +18,7 @@ class Command(BaseCommand):
         count = options['n']
         data = [user(
             username=f'user{last_id + i}',
-            password='123456',
+            password='qwertyuasd',
             email=f'user{last_id + i}@example.com',
             first_name=f'user{last_id + i}',
             last_name=f'user{last_id + i}', )

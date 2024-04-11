@@ -49,6 +49,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
+    slug = models.SlugField(max_length=100, verbose_name='Слаг', unique=True)
     views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
@@ -129,6 +130,9 @@ class Article(models.Model):
         if self.date_published != self.change_date:
             return True
         return False
+
+    def get_tags(self):
+        return self.tags.all()
 
 
 class Comment(models.Model):

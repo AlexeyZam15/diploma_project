@@ -17,7 +17,8 @@ def get_context():
     return {
         'cats': categories,
         'pop_posts': pop_articles,
-        'search_form': forms.SearchForm
+        'search_form': forms.SearchForm,
+        'tags': models.Tag.objects.all(),
     }
 
 
@@ -105,21 +106,21 @@ def show_category(request, category_title):
     page_obj = paginator.get_page(page_number)
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
-    context['cat'] = category
     context['text'] = category.description
     return render(request, 'blog/blog-list-01.html', context)
 
 
-def show_tag(request, tag):
+def show_tag(request, tag_slug):
     context = get_context()
-    tag = get_object_or_404(models.Tag, title=tag)
-    context['title'] = tag.title
-    posts = models.Article.get_published_posts().filter(tags=tag)
+    tag_slug = get_object_or_404(models.Tag, slug=tag_slug)
+    posts = models.Article.get_published_posts().filter(tags=tag_slug)
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page') or 1
     page_obj = paginator.get_page(page_number)
+    context['title'] = tag_slug.title
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
+    context['tag'] = tag_slug
     return render(request, 'blog/category-01.html', context)
 
 

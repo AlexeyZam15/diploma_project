@@ -9,10 +9,24 @@
 <div class="col-md-10 col-lg-8 p-b-30">
     <div class="p-r-10 p-r-0-sr991">
         <!-- Blog Detail -->
-        <div class="p-b-70">
-            <a href="{% url 'category' post.category.title %}" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
-                {{ post.category.title }}
-            </a>
+        <div class="p-b-20">
+            <div class="p-b-10">
+                <a href="{% url 'category' post.category.title %}" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
+                    {{ post.category.title }}
+                </a>
+            </div>
+
+            <!-- Tag -->
+            <div class="p-b-20">
+                <div class="flex-wr-s-s m-rl--5">
+                    {% for tag in post.get_tags %}
+                    <a href="#"
+                       class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                        {{ tag.title }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
 
             <div class="flex-wr-s-s p-b-40">
 								<span class="f1-s-3 cl8 m-r-15">
