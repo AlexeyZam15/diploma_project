@@ -2,19 +2,24 @@ from django.contrib import admin, messages
 
 import logging
 
+from django.contrib.auth import get_user_model
+
 from . import models
 
 logger = logging.getLogger(__name__)
 
 
-class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'email', 'bio', 'birth_date', 'date_joined', 'change_date')
-    search_fields = ('first_name', 'last_name', 'email')
+@admin.register(get_user_model())
+class UserAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'username', 'first_name', 'last_name', 'email', 'bio', 'birth_date', 'date_joined', 'change_date')
+    search_fields = ('username', 'first_name', 'last_name', 'email')
     list_per_page = 15
     ordering = ('-change_date',)
     readonly_fields = ['date_joined', 'change_date']
 
 
+@admin.register(models.Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'author_full_name', 'article_title', 'date_created', 'date_modified')
     search_fields = (
@@ -26,14 +31,15 @@ class CommentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['author', 'article']
 
 
+@admin.register(models.Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author_full_name', 'category', 'views', 'is_published', 'date_published', 'change_date')
+    list_display = ('title', 'author_full_name', 'category', 'is_published', 'date_published', 'change_date')
     search_fields = ('title', 'author__first_name', 'author__last_name', 'category')
     list_per_page = 15
     ordering = ('-change_date',)
     readonly_fields = ['date_published', 'change_date']
     list_filter = ('author', 'is_published', 'category')
-    autocomplete_fields = ['author']
+    autocomplete_fields = ['author', 'tags']
     actions = ['publish_articles', 'hide_articles']
 
     @admin.action(description="Опубликовать статьи")
@@ -63,14 +69,17 @@ class ArticleAdmin(admin.ModelAdmin):
         messages.success(request, "Выбранные статьи скрыты")
 
 
+@admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'views')
+    list_display = ('title',)
     search_fields = ('title', 'description')
     list_per_page = 15
     ordering = ('id',)
 
 
-admin.site.register(models.User, AuthorAdmin)
-admin.site.register(models.Article, ArticleAdmin)
-admin.site.register(models.Comment, CommentAdmin)
-admin.site.register(models.Category, CategoryAdmin)
+@admin.register(models.Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug')
+    search_fields = ('title', 'slug')
+    list_per_page = 15
+    ordering = ('id',)

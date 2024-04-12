@@ -32,7 +32,6 @@ class User(AbstractUser):
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
     description = RichTextField(verbose_name='Описание', null=True, blank=True)
-    views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
         return self.title
@@ -49,32 +48,31 @@ class Category(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
+    description = models.CharField(max_length=255, verbose_name='Описание', default='Описание')
     slug = models.SlugField(max_length=100, verbose_name='Слаг', unique=True)
-    views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
         return self.title
 
     class Meta:
         ordering = ['id']
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
 
 
 class Article(models.Model):
     title = models.CharField(max_length=25, verbose_name='Заголовок')
-    description = models.TextField(max_length=255, verbose_name='Описание', null=True, blank=True)
+    description = models.TextField(max_length=500, verbose_name='Описание', null=True, blank=True)
     content = RichTextField(verbose_name='Содержание', null=True, blank=True)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name='Категория', null=True)
     tags = models.ManyToManyField(Tag, verbose_name='Теги', blank=True)
-    views = models.IntegerField(default=0, verbose_name='Просмотры')
     is_published = models.BooleanField(default=False, verbose_name='Опубликовано')
     date_published = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     change_date = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     image = models.FileField(upload_to='images/', verbose_name='Превью', null=True, blank=True)
 
-    fields = ['title', 'content', 'category', 'views']
+    fields = ['title', 'content', 'category']
 
     @staticmethod
     def create_article(data):
@@ -111,7 +109,7 @@ class Article(models.Model):
 
     def __str__(self):
         formatted_date = self.date_published.strftime('%d.%m.%Y %H:%M:%S')
-        return f"{self.title} {self.content} {formatted_date} {self.author.full_name} {self.category} {self.views} {self.is_published}"
+        return f"{self.title} {self.content} {formatted_date} {self.author.full_name} {self.category} {self.is_published}"
 
     class Meta:
         ordering = ['-change_date']
@@ -133,6 +131,21 @@ class Article(models.Model):
 
     def get_tags(self):
         return self.tags.all()
+
+    @property
+    def views(self):
+        """
+        Получение значения просмотров для данной статьи
+        """
+        article_views, created = ArticleViews.objects.get_or_create(article=self)
+        return article_views.views
+
+    @views.setter
+    def views(self, value):
+        """
+        Установка количества просмотров для данной статьи
+        """
+        ArticleViews.objects.update_or_create(article=self, defaults={'views': value})
 
 
 class Comment(models.Model):
@@ -176,3 +189,16 @@ class Comment(models.Model):
     @admin.display(description='Статья')
     def article_title(self):
         return self.article.title
+
+
+class ArticleViews(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', related_name='ar_views')
+    views = models.IntegerField(default=0, verbose_name='Просмотры')
+
+    class Meta:
+        ordering = ['-views']
+        verbose_name = 'Популярность статей'
+        verbose_name_plural = 'Популярность статей'
+
+    def __str__(self):
+        return f"{self.article.title}: {self.views} просмотров"

@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 
 from . import models
@@ -13,7 +12,7 @@ from . import forms
 
 def get_context():
     categories = models.Category.objects.all()
-    pop_articles = models.Article.get_published_posts().order_by('-views')[:5]
+    pop_articles = models.Article.get_published_posts().order_by('ar_views')[:5]
     return {
         'cats': categories,
         'pop_posts': pop_articles,
@@ -107,20 +106,25 @@ def show_category(request, category_title):
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
     context['text'] = category.description
+    category.views += 1
+    category.save()
     return render(request, 'blog/blog-list-01.html', context)
 
 
 def show_tag(request, tag_slug):
     context = get_context()
-    tag_slug = get_object_or_404(models.Tag, slug=tag_slug)
-    posts = models.Article.get_published_posts().filter(tags=tag_slug)
+    tag = get_object_or_404(models.Tag, slug=tag_slug)
+    posts = models.Article.get_published_posts().filter(tags=tag)
     paginator = Paginator(posts, 6)
     page_number = request.GET.get('page') or 1
     page_obj = paginator.get_page(page_number)
-    context['title'] = tag_slug.title
+    context['title'] = tag.title
     context['page_obj'] = page_obj
     context['page'] = int(page_number)
-    context['tag'] = tag_slug
+    context['tag'] = tag
+    context['text'] = tag.description
+    tag.views += 1
+    tag.save()
     return render(request, 'blog/category-01.html', context)
 
 
@@ -129,9 +133,7 @@ def add_post(request):
     form = forms.ArticleForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
+            post = form.save(author=request.user)
             return redirect('post', post.id)
     context = get_context()
     context['title'] = 'Добавить статью'

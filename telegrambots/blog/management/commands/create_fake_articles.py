@@ -41,7 +41,6 @@ class Command(BaseCommand):
                 content=f'Content{i}',
                 author=random.choice(authors),
                 category=random.choice(categories),
-                views=random.randint(0, 100),
                 is_published=random.choice([True, True, False])
             )
             data.append(article)
